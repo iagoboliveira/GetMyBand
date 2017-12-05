@@ -1,0 +1,54 @@
+<resources>
+    <string name="app_name">GetMyBand</string>
+    <string name="title_activity_detalhe_banda">DetalheBandaActivity</string>
+    <string name="btn_novo">Novo</string>
+    <string name="btn_salvar">Salvar</string>
+    <string name="txt_nome">Nome.:</string>
+    <string name="txt_idade">Idade.:</string>
+    <string name="txt_telfone">Telefone.:</string>
+    <string name="txt_nascimento">Nascimento.:</string>
+
+    <!-- Strings do login -->
+    <string name="hint_name">Name</string>
+    <string name="hint_email">Email</string>
+    <string name="hint_age">Age</string>
+    <string name="hint_phone">Phone</string>
+    <string name="hint_password">Password</string>
+    <string name="hint_confirm_password">Confirm Password</string>
+    <string name="hint_login">Login</string>
+    <string name="hint_register">Register</string>
+    <string name="hint_update">Update</string>
+    <string name="error_message_Login">Enter Full Login</string>
+    <string name="error_message_name">Enter Full Name</string>
+    <string name="error_message_email">Enter Valid Email</string>
+    <string name="error_message_age">Enter Age</string>
+    <string name="error_message_phone">Enter Phone</string>
+    <string name="error_message_password">Enter Password</string>
+    <string name="success_message">Registration Successful</string>
+    <string name="success_update">Update Successful</string>
+    <string name="text_not_member">No account yet? Create one</string>
+    <string name="text_member">Already a member ? Login</string>
+    <string name="text_already_member">Already a member? Login</string>
+    <string name="error_email_exists">Email Already Exists</string>
+    <string name="error_fatal">Deu erro fatal</string>
+    <string name="error_password_match">Password Does Not Matches</string>
+    <string name="error_valid_email_password">Wrong Email or Password</string>
+    <string name="action_settings">Settings</string>
+    <string name="text_hello">Hello,</string>
+    <string name="text_title">Android Tutorials Hub</string>
+    <string name="title_activity_navigation">NavigationActivity</string>
+    <string name="title_home">Home</string>
+    <string name="title_bands">Bands</string>
+    <string name="title_artists">Artists</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_main2">Main2Activity</string>
+    <string name="section_format">Hello World from section: %1$d</string>
+    <string name="title_activity_pages">PagesActivity</string>
+    <string name="tab_text_1">Tab 1</string>
+    <string name="tab_text_2">Tab 2</string>
+    <string name="tab_text_3">Tab 3</string>
+
+
+</resources>
