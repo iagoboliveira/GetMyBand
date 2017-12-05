@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.project.iago.getmyband.R;
 import com.project.iago.getmyband.model.Banda;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -21,7 +22,11 @@ import java.util.List;
 
 public class BandaAdapter extends ArrayAdapter {
 
+
+    private List<Banda> bandas =  new ArrayList<Banda>();
+
     public BandaAdapter(@NonNull Context context,@NonNull List<Banda> objects) {
+        //bandas.addAll(objects);
         super(context, 0, objects);
     }
 
@@ -31,13 +36,14 @@ public class BandaAdapter extends ArrayAdapter {
 
         if (convertView == null){
             convertView = LayoutInflater.from(getContext())
-                    .inflate(R.layout.item_da_lista, parent);
+                    .inflate(R.layout.item_da_lista, null);
         }
 
         TextView txtNome = (TextView)convertView.findViewById(R.id.txtNome);
         txtNome.setText(banda.getNome());
-        txtNome.setTextColor( Color.BLUE);
+        txtNome.setTextColor( Color.CYAN);
         TextView txtGenero = (TextView)convertView.findViewById(R.id.txtGenero);
+        txtGenero.setTextColor(Color.GREEN);
         txtGenero.setText(banda.getGenero());
 
         return convertView;

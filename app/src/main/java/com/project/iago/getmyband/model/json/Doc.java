@@ -3,6 +3,8 @@ package com.project.iago.getmyband.model.json;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.List;
+
 public class Doc {
 
     @SerializedName("id")
@@ -14,6 +16,9 @@ public class Doc {
     @SerializedName("band")
     @Expose
     private String band;
+    @SerializedName("fmRadios")
+    @Expose
+    private List<String> fmRadios = null;
 
     public String getId() {
         return id;
@@ -38,4 +43,13 @@ public class Doc {
     public void setBand(String band) {
         this.band = band;
     }
+
+    public List<String> getFmRadios() {
+        return fmRadios;
+    }
+
+    public void setFmRadios(List<String> fmRadios) {
+        this.fmRadios = fmRadios;
+    }
+
 }

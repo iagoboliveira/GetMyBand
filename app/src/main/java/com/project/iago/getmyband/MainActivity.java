@@ -28,18 +28,18 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-//        /*
+//
 //        bandass.add(new Banda("Metalica", "Rock"));
 //        bandass.add(new Banda("Ponto de Equilibrio", "Reggae"));
 //
 //        ListView listViewBandas = (ListView)findViewById(R.id.listaBandas);
 //
-//        /**ArrayAdapter<Banda> adapterBandas = new ArrayAdapter<Banda>(
+//        /ArrayAdapter<Banda> adapterBandas = new ArrayAdapter<Banda>(
 //                this, R.layout.item_da_lista, bandas);
 //        BandaAdapter adapter = new BandaAdapter(this, bandass);
 //        listViewBandas.setAdapter(adapter);
 //
-//        // Clicando no item da lista deverá executar o comando abaixo
+//         Clicando no item da lista deverá executar o comando abaixo
 //        listViewBandas.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 //            @Override
 //            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {

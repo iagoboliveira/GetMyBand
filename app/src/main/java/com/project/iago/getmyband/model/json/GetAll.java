@@ -14,12 +14,24 @@ public interface GetAll {
 
   /*  @GET("response")
     Call<Response> all();*/
+/*
 
     @GET("response")
     Call<JsonVagalume> getBands(
             @Query("search.art?q=") String artist,
             @Query("limit") Integer limit);
+*/
+/*
 
+    @GET("response")
+    Call<JsonVagalume> getBands(
+            @Query("term=") String artist,
+            @Query("limit") Integer limit);
+*/
+
+
+    @GET("results")
+    Call<LastFM_JSON> getBands();
 
     @GET("{band}/Doc")
     Call<Doc> select(@Path("band") String name);
