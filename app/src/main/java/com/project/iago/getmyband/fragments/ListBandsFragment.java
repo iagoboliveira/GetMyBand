@@ -3,12 +3,21 @@ package com.project.iago.getmyband.fragments;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
-import android.app.Fragment;
+import android.support.design.widget.TextInputEditText;
+import android.support.design.widget.TextInputLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.widget.NestedScrollView;
+import android.support.v7.widget.AppCompatButton;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.project.iago.getmyband.R;
+import com.project.iago.getmyband.dao.DaoArtist;
+import com.project.iago.getmyband.helper.InputValidation;
+import com.project.iago.getmyband.helper.MyBandHelper;
+import com.project.iago.getmyband.model.Artist;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -19,35 +28,40 @@ import com.project.iago.getmyband.R;
  * create an instance of this fragment.
  */
 public class ListBandsFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private static final String TAG = ListBandsFragment.class.getSimpleName();
+    private final String ARG_EMAIL = "ARG_EMAIL";
+    private final Fragment fragment = ListBandsFragment.this;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private NestedScrollView nestedScrollView;
+
+    private TextInputLayout textInputLayoutName;
+    private TextInputLayout textInputLayoutAge;
+    private TextInputLayout textInputLayoutPhone;
+
+    private TextInputEditText textInputEditTextName;
+    private TextInputEditText textInputEditTextAge;
+    private TextInputEditText textInputEditTextPhone;
+
+    private AppCompatButton appCompatButtonUpdate;
+
+    private InputValidation inputValidation;
+    private MyBandHelper databaseHelper;
+    private DaoArtist daoArtist;
+    private Artist artist;
+    private String artist_email;
 
     private OnFragmentInteractionListener mListener;
 
     public ListBandsFragment() {
-        // Required empty public constructor
+        Log.i("MyBand", TAG+" () - Construct() ");
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment ListBandsFragment.
-     */
     // TODO: Rename and change types and number of parameters
     public static ListBandsFragment newInstance(String param1, String param2) {
         ListBandsFragment fragment = new ListBandsFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        Bundle args = new Bundle();/*
+        args.putString(param1, param1);
+        args.putString(ARG_PARAM2, param2);*/
         fragment.setArguments(args);
         return fragment;
     }
@@ -55,20 +69,54 @@ public class ListBandsFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
+/*        if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+        }*/
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_list_bands, container, false);
+        Bundle b=getArguments();
+        artist_email = b.getString(ARG_EMAIL);
+        Log.i("MyBand", TAG+" () - Email do camarada->"+artist_email);
+
+        View view = inflater.inflate(R.layout.fragment_list_bands, container, false);
+
+        initViews(view);
+        initListeners(view);
+        initObjects();
+        return view;
+
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
+    private void initViews(View view) {
+        nestedScrollView = (NestedScrollView) view.findViewById(R.id.nestedHomeScrollView);
+
+        textInputLayoutName = (TextInputLayout) view.findViewById(R.id.txtHomeName);
+        textInputLayoutAge = (TextInputLayout) view.findViewById(R.id.txtHomeAge);
+        textInputLayoutPhone = (TextInputLayout) view.findViewById(R.id.txtHomePhone);
+
+        textInputEditTextName = (TextInputEditText) view.findViewById(R.id.inputHomeName);
+        textInputEditTextAge = (TextInputEditText) view.findViewById(R.id.inputHomeAge);
+        textInputEditTextPhone = (TextInputEditText) view.findViewById(R.id.inputHomePhone);
+
+        appCompatButtonUpdate = (AppCompatButton) view.findViewById(R.id.btnUpdate);
+    }
+
+    private void initListeners(View view) {
+        appCompatButtonUpdate.setOnClickListener((View.OnClickListener) this);
+
+    }
+    private void initObjects() {
+        inputValidation = new InputValidation(fragment.getContext());
+        databaseHelper = new MyBandHelper(fragment.getContext());
+        daoArtist = new DaoArtist(fragment.getContext());
+        artist = new Artist();
+
+    }
+
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
@@ -92,16 +140,7 @@ public class ListBandsFragment extends Fragment {
         mListener = null;
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
+
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
