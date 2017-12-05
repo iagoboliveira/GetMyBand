@@ -2,6 +2,7 @@ package com.project.iago.getmyband.fragments;
 
 import android.content.Context;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
@@ -13,23 +14,28 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.gson.Gson;
 import com.project.iago.getmyband.R;
 import com.project.iago.getmyband.dao.DaoArtist;
 import com.project.iago.getmyband.helper.InputValidation;
 import com.project.iago.getmyband.helper.MyBandHelper;
 import com.project.iago.getmyband.model.Artist;
+import com.project.iago.getmyband.model.json.GetAll;
+import com.project.iago.getmyband.model.json.JsonVagalume;
+import com.project.iago.getmyband.model.json.Response;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link ListBandsFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link ListBandsFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class ListBandsFragment extends Fragment {
+import java.io.IOException;
+
+import javax.xml.transform.Result;
+
+import retrofit2.Call;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
+public class ListBandsFragment extends Fragment implements View.OnClickListener {
     private static final String TAG = ListBandsFragment.class.getSimpleName();
     private final String ARG_EMAIL = "ARG_EMAIL";
+    private final String ENDPOINT_URL = "http://api.vagalume.com.br/";
     private final Fragment fragment = ListBandsFragment.this;
 
     private NestedScrollView nestedScrollView;
@@ -50,13 +56,13 @@ public class ListBandsFragment extends Fragment {
     private Artist artist;
     private String artist_email;
 
-    private OnFragmentInteractionListener mListener;
+    //private OnFragmentInteractionListener mListener;
 
-    public ListBandsFragment() {
+    public ListBandsFragment()
+    {
         Log.i("MyBand", TAG+" () - Construct() ");
     }
 
-    // TODO: Rename and change types and number of parameters
     public static ListBandsFragment newInstance(String param1, String param2) {
         ListBandsFragment fragment = new ListBandsFragment();
         Bundle args = new Bundle();/*
@@ -87,6 +93,7 @@ public class ListBandsFragment extends Fragment {
         initViews(view);
         initListeners(view);
         initObjects();
+
         return view;
 
     }
@@ -102,11 +109,11 @@ public class ListBandsFragment extends Fragment {
         textInputEditTextAge = (TextInputEditText) view.findViewById(R.id.inputHomeAge);
         textInputEditTextPhone = (TextInputEditText) view.findViewById(R.id.inputHomePhone);
 
-        appCompatButtonUpdate = (AppCompatButton) view.findViewById(R.id.btnUpdate);
+        appCompatButtonUpdate = (AppCompatButton) view.findViewById(R.id.btnAdd);
     }
 
     private void initListeners(View view) {
-        appCompatButtonUpdate.setOnClickListener((View.OnClickListener) this);
+        appCompatButtonUpdate.setOnClickListener(this);
 
     }
     private void initObjects() {
@@ -117,7 +124,58 @@ public class ListBandsFragment extends Fragment {
 
     }
 
-    public void onButtonPressed(Uri uri) {
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.btnAdd:
+                new LongOperation().execute("");
+                break;
+        }
+
+    }
+    private class LongOperation extends AsyncTask<String, Void, String> {
+        @Override
+        protected String doInBackground(String... params) {
+
+            callAPI();
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+        }
+
+        @Override
+        protected void onPreExecute() {
+        }
+
+        @Override
+        protected void onProgressUpdate(Void... values) {
+        }
+    }
+
+    public void callAPI(){
+        try {
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(ENDPOINT_URL)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            GetAll response = retrofit.create(GetAll.class);
+
+            Call<JsonVagalume> call2 = response.getBands("redhot", 5);
+
+            retrofit2.Response<JsonVagalume> retorno = call2.execute();
+            JsonVagalume r  = retorno.body();
+            Log.i("MyBand", TAG+" () - O resultado do jeison ->"+r);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+/*    public void onButtonPressed(Uri uri) {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
         }
@@ -142,7 +200,6 @@ public class ListBandsFragment extends Fragment {
 
 
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
-    }
+    }*/
 }

@@ -1,7 +1,5 @@
 package com.project.iago.getmyband.model;
 
-import com.project.iago.getmyband.model.Banda;
-
 import java.util.List;
 
 /**

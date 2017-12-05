@@ -35,10 +35,10 @@ public class BandaAdapter extends ArrayAdapter {
         }
 
         TextView txtNome = (TextView)convertView.findViewById(R.id.txtNome);
-        txtNome.setText(banda.nome);
+        txtNome.setText(banda.getNome());
         txtNome.setTextColor( Color.BLUE);
         TextView txtGenero = (TextView)convertView.findViewById(R.id.txtGenero);
-        txtGenero.setText(banda.genero);
+        txtGenero.setText(banda.getGenero());
 
         return convertView;
     }

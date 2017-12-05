@@ -19,6 +19,6 @@ public class DetalheBandaActivity extends AppCompatActivity {
         Banda banda = (Banda)getIntent().getSerializableExtra(BANDA_SELECIONADA);
 
         TextView txt = (TextView)findViewById(R.id.textView);
-        txt.setText(banda.nome +">>"+banda.genero);
+        txt.setText(banda.getNome() +">>"+banda.getGenero());
     }
 }
