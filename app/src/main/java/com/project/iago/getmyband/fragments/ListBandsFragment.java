@@ -64,12 +64,12 @@ public class ListBandsFragment extends Fragment implements View.OnClickListener,
 
     private InputValidation inputValidation;
     private MyBandHelper databaseHelper;
-    private DaoArtist daoArtist;
     private Artist artist;
     private String artist_email;
     private JSONArray jsonArray;
     private List<Banda> bandas;
     private BandaAdapter adapter;
+    private DaoArtist daoArtist;
 
     //private OnFragmentInteractionListener mListener;
 
@@ -150,7 +150,7 @@ public class ListBandsFragment extends Fragment implements View.OnClickListener,
         protected String doInBackground(String... params) {
             //Log.i("MyBand", TAG+" () -getJSON->"+getJSON(ENDPOINT_URL));
             String ENDPOINT_FINAL = ENDPOINT_URL+params[0];
-            Log.i("MyBand", TAG+" () -ENDPOINT_FINAL ->"+ENDPOINT_FINAL);
+            //Log.i("MyBand", TAG+" () -ENDPOINT_FINAL ->"+ENDPOINT_FINAL);
             JSONObject json = null;
             try {
                 json = new JSONObject(getJSON(ENDPOINT_FINAL));

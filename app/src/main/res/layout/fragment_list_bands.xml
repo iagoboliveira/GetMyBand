@@ -23,16 +23,46 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <SearchView
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/txtMyListCover"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/searchBand"/>
+                android:layout_height="wrap_content">
 
-            <ListView
+                    <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/cover_list"
+                    />
+
+                <SearchView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/searchBand"/>
+
+                <ListView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/listaBandasFull"/>
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/txtMyList"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/listaBandasFull"/>
+                android:layout_marginTop="40dp">
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/my_list"
+                    android:layout_gravity="center"
+                    />
+
+                <ListView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/myListView"/>
+            </android.support.design.widget.TextInputLayout>
 
      <!--       <android.support.v7.widget.AppCompatButton
                 android:id="@+id/btnAdd"
