@@ -30,9 +30,16 @@ public class MyBandHelper extends SQLiteOpenHelper{
             + UserContract.COLLUMN_USER_EMAIL   + " text not null, "
             + UserContract.COLLUMN_USER_PASWORD + " text not null) ";
 
+    private static final String CREATE_TABLE_ARTIST_BANDA =
+            "CREATE TABLE "+ ArtistBandaContract.TABLE_ARTIST_BAND +"("
+                    + ArtistBandaContract.COLLUMN_ARTIST_BAND_ID          + " integer primary key autoincrement, "
+                    + ArtistBandaContract.COLLUMN_ARTIST_BAND_NAME        + " text not null, "
+                    + ArtistBandaContract.COLLUMN_ARTIST_BAND_EMAIL       + " text not null)";
+
     // drop table sql query
-    private String DROP_TABLE_ARTIST = "DROP TABLE IF EXISTS " +ArtistContract.TABLE_ARTIST;
-    private String DROP_TABLE_USER   = "DROP TABLE IF EXISTS " +UserContract.TABLE_USER;
+    private String DROP_TABLE_ARTIST      = "DROP TABLE IF EXISTS " +ArtistContract.TABLE_ARTIST;
+    private String DROP_TABLE_USER        = "DROP TABLE IF EXISTS " +UserContract.TABLE_USER;
+    private String DROP_TABLE_BAND_ARTIST = "DROP TABLE IF EXISTS " +ArtistBandaContract.TABLE_ARTIST_BAND;
 
     public MyBandHelper(Context context) {
 
@@ -44,6 +51,7 @@ public class MyBandHelper extends SQLiteOpenHelper{
 
         db.execSQL(CREATE_TABLE_ARTIST);
         db.execSQL(CREATE_TABLE_USERS);
+        db.execSQL(CREATE_TABLE_ARTIST_BANDA);
     }
 
     @Override
@@ -52,6 +60,7 @@ public class MyBandHelper extends SQLiteOpenHelper{
         //Drop User Table if exist
           db.execSQL(DROP_TABLE_ARTIST);
           db.execSQL(DROP_TABLE_USER);
+          db.execSQL(DROP_TABLE_BAND_ARTIST);
 
         // Create tables again
         onCreate(db);

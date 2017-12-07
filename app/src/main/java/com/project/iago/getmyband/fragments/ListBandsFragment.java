@@ -23,6 +23,7 @@ import com.project.iago.getmyband.dao.DaoArtist;
 import com.project.iago.getmyband.helper.InputValidation;
 import com.project.iago.getmyband.helper.MyBandHelper;
 import com.project.iago.getmyband.model.Artist;
+import com.project.iago.getmyband.model.ArtistBand;
 import com.project.iago.getmyband.model.Banda;
 import com.project.iago.getmyband.model.json.GetAll;
 import com.project.iago.getmyband.model.json.LastFM_JSON;
@@ -61,6 +62,7 @@ public class ListBandsFragment extends Fragment implements View.OnClickListener,
     private AppCompatButton appCompatButtonUpdate;
 
     private ListView listViewBandas;
+    private ListView listViewCovers;
 
     private InputValidation inputValidation;
     private MyBandHelper databaseHelper;
@@ -108,6 +110,7 @@ public class ListBandsFragment extends Fragment implements View.OnClickListener,
         initViews(view);
         initListeners(view);
         initObjects();
+        returnListCovers(artist_email);
 
         return view;
 
@@ -224,33 +227,31 @@ public class ListBandsFragment extends Fragment implements View.OnClickListener,
         }
         return null;
     }
-    public void callAPI(){
-        try {
-            Retrofit retrofit = new Retrofit.Builder()
-                    .baseUrl(ENDPOINT_URL)
-                    .addConverterFactory(GsonConverterFactory.create())
-                    .build();
 
-            GetAll response = retrofit.create(GetAll.class);
+    public void returnListCovers(String email){
 
-            //Call<LastFM_JSON> call2 = response.getBands("skank", "eb5719fe02d4aee4bfe66329f6e7a643","json");
-            Call<LastFM_JSON> call2 = response.getBands();
+        Log.i("returnListCovers", TAG+" () - Inicio Método.");
+        List<ArtistBand> listCovers = new ArrayList<ArtistBand>();
+        ArtistBand covers = new ArtistBand();
+        covers.setArtist_band_name("Testando cover");
+        listCovers.add(covers);
+        //listViewCovers
 
-            retrofit2.Response<LastFM_JSON> retorno = call2.execute();
-            LastFM_JSON r  = retorno.body();
-            Log.i("MyBand", TAG+" () - O resultado do json ->"+r);
+        ArrayAdapter<ArtistBand> adapterCovers = new ArrayAdapter<ArtistBand>(
+                fragment.getContext(), R.layout.item_list_cover, listCovers);
 
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+
+        listViewCovers.setAdapter(adapterCovers);
 
     }
 
     private void initViews(View view) {
-        nestedScrollView = (NestedScrollView) view.findViewById(R.id.nestedHomeScrollView);
+        nestedScrollView = (NestedScrollView) view.findViewById(R.id.nestedHomeScrollViewCovers);
        // appCompatButtonUpdate = (AppCompatButton) view.findViewById(R.id.btnAdd);
         editsearch = (SearchView)view.findViewById(R.id.searchBand);
-        listViewBandas = view.findViewById(R.id.listaBandasFull);
+        listViewBandas = view.findViewById(R.id.listaBandasSearch);
+        listViewCovers = view.findViewById(R.id.myListCovers);
+
     }
 
     private void initListeners(View view) {
@@ -259,6 +260,7 @@ public class ListBandsFragment extends Fragment implements View.OnClickListener,
 
     }
     private void initObjects() {
+        nestedScrollView = new NestedScrollView(fragment.getContext());
         inputValidation = new InputValidation(fragment.getContext());
         databaseHelper = new MyBandHelper(fragment.getContext());
         daoArtist = new DaoArtist(fragment.getContext());
@@ -278,31 +280,27 @@ public class ListBandsFragment extends Fragment implements View.OnClickListener,
 
     }
 
-/*    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
+
+/*    public void callAPI(){
+        try {
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(ENDPOINT_URL)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            GetAll response = retrofit.create(GetAll.class);
+
+            //Call<LastFM_JSON> call2 = response.getBands("skank", "eb5719fe02d4aee4bfe66329f6e7a643","json");
+            Call<LastFM_JSON> call2 = response.getBands();
+
+            retrofit2.Response<LastFM_JSON> retorno = call2.execute();
+            LastFM_JSON r  = retorno.body();
+            Log.i("MyBand", TAG+" () - O resultado do json ->"+r);
+
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-    }
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
-
-
-    public interface OnFragmentInteractionListener {
-        void onFragmentInteraction(Uri uri);
     }*/
+
 }
