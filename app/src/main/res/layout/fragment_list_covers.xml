@@ -8,7 +8,7 @@
 
     <android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/nestedHomeScrollViewCovers"
+        android:id="@+id/nestedScrollViewMyCoverss"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/cardview_dark_background"
@@ -24,23 +24,20 @@
             android:orientation="vertical">
 
             <android.support.design.widget.TextInputLayout
-                android:id="@+id/txtMyListCover"
+                android:id="@+id/txtMyList"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40dp">
 
-                    <TextView
-                    android:layout_width="match_parent"
+                <TextView
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/cover_list"
+                    android:text="@string/my_list"
+                    android:layout_gravity="center"
                     />
 
-                <SearchView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:id="@+id/searchBand"/>
-
                 <ListView
-                    android:id="@+id/listaBandasSearch"
+                    android:id="@+id/myListCovers"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
             </android.support.design.widget.TextInputLayout>
@@ -55,4 +52,5 @@
 
         </android.support.v7.widget.LinearLayoutCompat>
     </android.support.v4.widget.NestedScrollView>
+
 </LinearLayout>

@@ -54,6 +54,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        
         Bundle b=getArguments();
         artist_email = b.getString(ARG_EMAIL);
         Log.i("MyBand", TAG+" () - onCreateView chegou foi->"+artist_email);

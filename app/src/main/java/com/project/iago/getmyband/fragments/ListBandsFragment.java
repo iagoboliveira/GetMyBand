@@ -1,11 +1,13 @@
 package com.project.iago.getmyband.fragments;
 
+import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.NestedScrollView;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.AppCompatButton;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -28,6 +30,7 @@ import com.project.iago.getmyband.model.Banda;
 import com.project.iago.getmyband.model.json.GetAll;
 import com.project.iago.getmyband.model.json.LastFM_JSON;
 import com.project.iago.getmyband.view.BandaAdapter;
+import com.project.iago.getmyband.view.CoversAdapter;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -69,8 +72,14 @@ public class ListBandsFragment extends Fragment implements View.OnClickListener,
     private Artist artist;
     private String artist_email;
     private JSONArray jsonArray;
-    private List<Banda> bandas;
     private BandaAdapter adapter;
+    private List<Banda> bandas;
+    private CoversAdapter covers;
+    private ArtistBand artistBand;
+    private List<ArtistBand> listCovers;
+    private boolean haveBandEmail;
+    private boolean addCoverBoolean;
+    private String nameBand;
     private DaoArtist daoArtist;
 
     //private OnFragmentInteractionListener mListener;
@@ -104,13 +113,12 @@ public class ListBandsFragment extends Fragment implements View.OnClickListener,
         Bundle b=getArguments();
         artist_email = b.getString(ARG_EMAIL);
         Log.i("MyBand", TAG+" () - Email do camarada->"+artist_email);
-
-        View view = inflater.inflate(R.layout.fragment_list_bands, container, false);
+        View view;
+        view = inflater.inflate(R.layout.fragment_list_bands, container, false);
 
         initViews(view);
         initListeners(view);
         initObjects();
-        returnListCovers(artist_email);
 
         return view;
 
@@ -123,8 +131,10 @@ public class ListBandsFragment extends Fragment implements View.OnClickListener,
 
     @Override
     public boolean onQueryTextChange(String newText) {
-        new LongOperation().execute(newText+"&limit=5");
+        new LongOperation().execute(newText+"&limit=1");
 
+
+        //returnListCovers(artist_email);
         ArrayAdapter<Banda> adapterBandas = new ArrayAdapter<Banda>(
                 fragment.getContext(), R.layout.item_da_lista, bandas);
         adapter = new BandaAdapter(fragment.getContext(), bandas);
@@ -137,12 +147,25 @@ public class ListBandsFragment extends Fragment implements View.OnClickListener,
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
                 //Banda banda = bandas.get(i);
-                Toast.makeText(fragment.getContext(), "clicou", Toast.LENGTH_SHORT).show();
-    /*
-                    Intent it = new Intent(MainActivity.this, DetalheBandaActivity.class);
+               // Toast.makeText(fragment.getContext(), "clicou", Toast.LENGTH_SHORT).show();
+                Banda data=(Banda)adapterView.getItemAtPosition(i);
+                nameBand = data.getNome();
+               // Toast.makeText(fragment.getContext(), "Nome da banda vai inseir->> "+nameBand, Toast.LENGTH_SHORT).show();
 
-                    it.putExtra(DetalheBandaActivity.BANDA_SELECIONADA, banda);
-                    startActivity(it);*/
+                // VALIDA SE ABANDA JA ESTA CADASTRADA
+
+                //addCoverBoolean = onAddCoverClick(view);
+
+                haveBandEmail =daoArtist.checkHaveBand(artist_email, nameBand);
+
+                if(!haveBandEmail){
+                    //Log.i("MyBand", TAG+" Vai inseir cover->"+haveBandEmail);
+                    daoArtist.addArtistBand(nameBand, artist_email);
+                    Toast.makeText(fragment.getContext(), "Banda Cadastrada com sucesso: "+nameBand, Toast.LENGTH_SHORT).show();
+                }else{
+                    //Log.i("MyBand", TAG+" Banda ja cadastrada->"+addCoverBoolean);
+                    Toast.makeText(fragment.getContext(), "Banda ja cadastrada, por favor selecione outra banda.: "+nameBand, Toast.LENGTH_SHORT).show();
+                }
             }
         });
         return false;
@@ -170,7 +193,7 @@ public class ListBandsFragment extends Fragment implements View.OnClickListener,
                 for (int i = 0; i < jsonArray.length(); i++) {
                     JSONObject row = jsonArray.getJSONObject(i);
                     name = row.getString("band");
-                    Log.i("MyBand", TAG+" () -name Banda->"+name);
+                   // Log.i("MyBand", TAG+" () -name Banda->"+name);
                     bandas.add(new Banda(name, "Genero Comum"));
                    // Log.i("MyBand", TAG+" () -Adicionou");
                 }
@@ -228,29 +251,32 @@ public class ListBandsFragment extends Fragment implements View.OnClickListener,
         return null;
     }
 
-    public void returnListCovers(String email){
+/*    public void returnListCovers(String email){
 
-        Log.i("returnListCovers", TAG+" () - Inicio Método.");
-        List<ArtistBand> listCovers = new ArrayList<ArtistBand>();
-        ArtistBand covers = new ArtistBand();
-        covers.setArtist_band_name("Testando cover");
-        listCovers.add(covers);
-        //listViewCovers
+        Log.i("MyBand", TAG+"returnListCovers () - Inicio metodo");
 
         ArrayAdapter<ArtistBand> adapterCovers = new ArrayAdapter<ArtistBand>(
                 fragment.getContext(), R.layout.item_list_cover, listCovers);
 
+        Log.i("MyBand", TAG+"returnListCovers () - New adapter");
+        artistBand.setArtist_band_name("Banda Cover TEste");
+        artistBand.setArtist_band_email(email);
+        artistBand.setArtist_band_id(2);
+        listCovers.add(artistBand);
 
-        listViewCovers.setAdapter(adapterCovers);
+        covers = new CoversAdapter(fragment.getContext(), listCovers);
+        //Log.i("MyBand", TAG+" () ->>>>>>>>>>>>>>>>>>>>>>> TAMANHO DO ARRAY <<<<<<<<<<<<<<<<<<<<<<<< ->"+bandas.size());
+        Log.i("MyBand", TAG+"returnListCovers () - set adapter");
+        listViewCovers.setAdapter(covers);
 
-    }
+    }*/
 
     private void initViews(View view) {
         nestedScrollView = (NestedScrollView) view.findViewById(R.id.nestedHomeScrollViewCovers);
        // appCompatButtonUpdate = (AppCompatButton) view.findViewById(R.id.btnAdd);
         editsearch = (SearchView)view.findViewById(R.id.searchBand);
         listViewBandas = view.findViewById(R.id.listaBandasSearch);
-        listViewCovers = view.findViewById(R.id.myListCovers);
+        //listViewCovers = view.findViewById(R.id.myListCovers);
 
     }
 
@@ -266,8 +292,13 @@ public class ListBandsFragment extends Fragment implements View.OnClickListener,
         daoArtist = new DaoArtist(fragment.getContext());
         bandas =  new ArrayList<Banda>();
         adapter = new BandaAdapter(fragment.getContext(), bandas);
+        listCovers = new ArrayList<ArtistBand>();
+        covers =  new CoversAdapter(fragment.getContext(), listCovers);
         artist = new Artist();
-
+        artistBand = new ArtistBand();
+        addCoverBoolean = false;
+        haveBandEmail = false;
+        nameBand =  new String();
     }
 
     @Override
@@ -279,7 +310,38 @@ public class ListBandsFragment extends Fragment implements View.OnClickListener,
         }*/
 
     }
+    public boolean onAddCoverClick(View v) {
 
+        final boolean[] deleteOk = {false};
+        //int i = Integer.parseInt((String)v.getTag());
+
+        AlertDialog.Builder alert = new AlertDialog.Builder(v.getContext());
+        alert.setTitle("Adicionar");
+        alert.setMessage("Are you sure you want to to add this band to your cover list??");
+        alert.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                deleteOk[0] = true;
+                 Log.i("MyBand", TAG+" onDeleteClick() -Confirmou->"+deleteOk[0]);
+                dialog.dismiss();
+            }
+        });
+
+        alert.setNegativeButton("No", new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                deleteOk[0] = false;
+                Log.i("MyBand", TAG+" onDeleteClick() -Negou->"+deleteOk[0]);
+                dialog.dismiss();
+                //return false;
+            }
+        });
+
+        alert.show();
+        return deleteOk[0];
+    }
 
 /*    public void callAPI(){
         try {

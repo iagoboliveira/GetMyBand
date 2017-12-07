@@ -207,7 +207,8 @@ public class DaoArtist extends MyBandHelper{
         values.put(ArtistBandaContract.COLLUMN_ARTIST_BAND_EMAIL, email);
 
         // Inserting Row
-        Log.i(TAG, "addArtistBand() - Vai inserir.");
+        Log.i(TAG, "addArtistBand() - Vai inserir."+nomeBanda);
+        Log.i(TAG, "addArtistBand() - Vai inserir."+email);
         db.insert(ArtistBandaContract.TABLE_ARTIST_BAND, null, values);
         db.close();
     }
@@ -220,7 +221,6 @@ public class DaoArtist extends MyBandHelper{
     public List<ArtistBand> getAllArtistBands(String email) {
         // array of columns to fetch
         String[] columns = {
-                ArtistBandaContract.COLLUMN_ARTIST_BAND_ID,
                 ArtistBandaContract.COLLUMN_ARTIST_BAND_NAME,
                 ArtistBandaContract.COLLUMN_ARTIST_BAND_EMAIL
         };
@@ -230,9 +230,10 @@ public class DaoArtist extends MyBandHelper{
         // selection argument
         String[] selectionArgs = {email};
 
-        // sorting orders
+       /* // sorting orders
         String sortOrder =
                 ArtistBandaContract.COLLUMN_ARTIST_BAND_NAME + " ASC";
+                */
         List<ArtistBand> artistList = new ArrayList<ArtistBand>();
 
         SQLiteDatabase db = this.getReadableDatabase();
@@ -245,22 +246,26 @@ public class DaoArtist extends MyBandHelper{
          */
         Cursor cursor = db.query(ArtistBandaContract.TABLE_ARTIST_BAND, //Table to query
                 columns,    //columns to return
-                selection,        //columns for the WHERE clause
-                selectionArgs,        //The values for the WHERE clause
+                null,        //columns for the WHERE clause
+                null,        //The values for the WHERE clause
                 null,       //group the rows
                 null,       //filter by row groups
-                sortOrder); //The sort order
+                null); //The sort order
 
-
+        int cursorCount = cursor.getCount();
         // Traversing through all rows and adding to list
         if (cursor.moveToFirst()) {
+
             do {
                 ArtistBand artistBand = new ArtistBand();
-                artistBand.setArtist_band_id(Integer.parseInt(cursor.getString(cursor.getColumnIndex(ArtistBandaContract.COLLUMN_ARTIST_BAND_ID))));
+                //artistBand.setArtist_band_id(Integer.parseInt(cursor.getString(cursor.getColumnIndex(ArtistBandaContract.COLLUMN_ARTIST_BAND_ID))));
                 artistBand.setArtist_band_name(cursor.getString(cursor.getColumnIndex(ArtistBandaContract.COLLUMN_ARTIST_BAND_NAME)));
                 artistBand.setArtist_band_email(cursor.getString(cursor.getColumnIndex(ArtistBandaContract.COLLUMN_ARTIST_BAND_EMAIL)));
                 // Adding artist record to list
-                artistList.add(artistBand);
+                artistList.add(artistBand);/*
+                Log.i(TAG, "moveToFirst() -"+artistBand.getArtist_band_name());
+                Log.i(TAG, "moveToFirst() -"+artistBand.getArtist_band_email());
+                Log.i(TAG, "cursorCount() -"+cursorCount);*/
             } while (cursor.moveToNext());
         }
         cursor.close();
@@ -277,7 +282,7 @@ public class DaoArtist extends MyBandHelper{
      * @param email
      * @return true/false
      */
-    public boolean checkHaveBand(String email) {
+    public boolean checkHaveBand(String email, String nameBand) {
 
         Log.i(TAG, "Entrou no metodo checkHaveBand() "+email);
         // array of columns to fetch
@@ -287,10 +292,10 @@ public class DaoArtist extends MyBandHelper{
         SQLiteDatabase db = this.getReadableDatabase();
 
         // selection criteria
-        String selection = ArtistBandaContract.COLLUMN_ARTIST_BAND_EMAIL + " = ?";
+        String selection = ArtistBandaContract.COLLUMN_ARTIST_BAND_EMAIL + " = ? AND "+ArtistBandaContract.COLLUMN_ARTIST_BAND_NAME + " = ?";
 
         // selection argument
-        String[] selectionArgs = {email};
+        String[] selectionArgs = {email,nameBand};
 
         Cursor cursor = db.query(ArtistBandaContract.TABLE_ARTIST_BAND, //Table to query
                 columns,                    //columns to return

@@ -26,6 +26,7 @@ import android.widget.Toast;
 import com.project.iago.getmyband.R;
 import com.project.iago.getmyband.fragments.HomeFragment;
 import com.project.iago.getmyband.fragments.ListBandsFragment;
+import com.project.iago.getmyband.fragments.ListCoversFragment;
 
 public class PagesActivity extends AppCompatActivity {
 
@@ -43,6 +44,7 @@ public class PagesActivity extends AppCompatActivity {
         email_user = getIntent().getStringExtra("EMAIL");
         Log.i("MyBand", TAG+".onCreate() - INICIO 3- " +
                 "email: "+email_user);
+
        // CharSequence text = "Hello "+nameUser+"!";
        // int duration = Toast.LENGTH_SHORT;
 
@@ -160,8 +162,15 @@ public class PagesActivity extends AppCompatActivity {
                     listBands.setArguments(args2);
                     return listBands;
                 case 2:
-                    //   HomeFragment home = new HomeFragment();
-                    //  return home;
+                    Bundle args3 = new Bundle();
+                    args3.putString(ARG_EMAIL, email_user);
+                    ListCoversFragment listBands2 = new ListCoversFragment();
+                    listBands2.setArguments(args3);
+                    return listBands2;
+                    /*Intent it = new Intent(getApplicationContext(), ListaCoversGeral.class);
+                    it.putExtra(ARG_EMAIL, email_user);
+                    startActivity(it);*/
+
             }
 
             return PlaceholderFragment.newInstance(position + 1);
